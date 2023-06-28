@@ -8,6 +8,10 @@ powershell -command " 'dotnet version is' ; dotnet --version; "
 
 dotnet build
 
+ssh jeete@192.168.87.1 dir
+
+exit /b 0
+
 dotnet publish -p:PublishProfile=IISProfile
 
 @ECHO DOING LOCAL INSTALLATION NOW
