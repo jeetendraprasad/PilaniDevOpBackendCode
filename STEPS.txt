@@ -19,3 +19,7 @@ cd Q:\HOMEPATH\github
 8> dotnet build
 
 9> create .gitignore file
+
+10> Added "\PilaniDevOpBackendCode\Properties\PublishProfiles\IISProfile.pubxml"
+
+12> Added BuildScript.bat file
