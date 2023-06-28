@@ -18,8 +18,15 @@ cd Q:\HOMEPATH\github
 
 8> dotnet build
 
+dotnet run
+
+(browser) https://localhost:7281/User
+
 9> create .gitignore file
 
 10> Added "\PilaniDevOpBackendCode\Properties\PublishProfiles\IISProfile.pubxml"
 
 12> Added BuildScript.bat file
+
+13> If you run this batch file then you can open installed application at browser on url
+http://localhost/PilaniDevOpBackendCode/user
