@@ -1,0 +1,21 @@
+STEPS
+-----
+
+1> cd parent_folder
+cd Q:\HOMEPATH\github
+
+2> (in web browser) Create a new repo in git with name PilaniDevOpBackendCode
+
+3> git clone https://github.com/jeetendraprasad/PilaniDevOpBackendCode.git
+
+4> set PATH=C:\Users\jeete\Downloads\dotnet-sdk-6.0.411-win-x64;%PATH%
+
+5> cd PilaniDevOpBackendCode
+
+6> dotnet new webapi
+
+7> Create new file STEPS.txt (this file) to add steps.
+
+8> dotnet build
+
+9> create .gitignore file
