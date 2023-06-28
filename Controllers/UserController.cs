@@ -19,8 +19,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Name = "GetUserSet")]
-    public string[] Get()
+    public User[] Get()
     {
-        return Names;
+        return Names.Select( x => new User {Username = x}).ToArray();
     }
 }
