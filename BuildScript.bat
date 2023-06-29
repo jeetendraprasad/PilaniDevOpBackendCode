@@ -2,6 +2,8 @@
 @REM : THIS ASSUMES SERVER IP = %SERVER_IP%
 @REM : I HAVE DYNAMIC IP. SO I NEED TO CHANGE THE SERVER EVERY TIME IN THIS SCRIPT
 
+SET WORK_FOLDER=%~dp0
+SET WORK_FOLDER=%WORK_FOLDER:~0,-1%
 echo %~dp0
 
 SET SERVER_IP=192.168.87.1
@@ -26,9 +28,9 @@ ssh %SERVER_ADMINUSER%@%SERVER_IP% "echo Hi From Server"
 dotnet publish -p:PublishProfile=IISProfile
 
 @ECHO DOING LOCAL INSTALLATION NOW
-powershell -command " .\bin\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
+powershell -command " $Env:WORK_FOLDER\bin\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
 
-scp .\bin\debug %SERVER_ADMINUSER%@%SERVER_IP%:%SERVER_FOLDER%\debug
+scp %WORK_FOLDER%\bin\debug %SERVER_ADMINUSER%@%SERVER_IP%:%SERVER_FOLDER%\debug
 
 ssh %SERVER_ADMINUSER%@%SERVER_IP% " %SERVER_FOLDER%\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
 
