@@ -8,7 +8,7 @@ public class UserController : ControllerBase
 {
     private static readonly string[] Names = new[]
     {
-        "Arun", "Boby", "Chilly", "Don", "El", "Mmm",
+        "Arun", "Boby", "Chilly", "Don", "El", "Mmm", "Nana"
     };
 
     private readonly ILogger<UserController> _logger;

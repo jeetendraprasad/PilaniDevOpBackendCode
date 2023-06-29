@@ -6,6 +6,7 @@ SET WORK_FOLDER=%~dp0
 SET WORK_FOLDER=%WORK_FOLDER:~0,-1%
 echo %~dp0
 
+@REM SERVER_IP IS DYNAMIC IP SO I HAVE TO CHANGE THAT ALWAYS.
 SET SERVER_IP=192.168.87.1
 SET SERVER_ADMINUSER=development
 @REM SERVER_FOLDER sould be present on server
@@ -15,32 +16,23 @@ SET PATH=%SystemRoot%\System32\WindowsPowerShell\v1.0\;%PATH%
 
 @echo STARTING BUILD NOW
 
-powershell -command " 'dotnet version is' ; dotnet --version; "
-
 dotnet build
-
-ping %SERVER_IP%
-
-ssh %SERVER_ADMINUSER%@%SERVER_IP% "echo Hi From Server"
-
-@REM exit /b 0
 
 dotnet publish -p:PublishProfile=IISProfile
 
-@REM : PRE INSTALLATION testing api on localhost
-curl http://localhost/PilaniDevOpBackendCode/user
+@REM ABOVE command produces following files (because of IISProfile.pubxml)
+@REM .\bin\debug\PilaniDevOpBackendCode.deploy-readme.txt
+@REM .\bin\debug\PilaniDevOpBackendCode.deploy.cmd
+@REM .\bin\debug\PilaniDevOpBackendCode.Parameters.xml
+@REM .\bin\debug\PilaniDevOpBackendCode.SetParameters.xml
+@REM .\bin\debug\PilaniDevOpBackendCode.SourceManifest.xml
+@REM .\bin\debug\PilaniDevOpBackendCode.zip
 
-@ECHO DOING LOCAL INSTALLATION NOW. THIS WOULD FAIL IF USER/JENKINS/SCRIPT DONT HAVE ADMIN ACCESS.
-powershell -command " $F=$Env:WORK_FOLDER; &$F\bin\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
-
-@REM : testing api on localhost
-curl http://localhost/PilaniDevOpBackendCode/user
+@REM Now to install I need to copy these file to server (scp command) and run following command (ssh command)
+@REM .\bin\debug\PilaniDevOpBackendCode.deploy.cmd /Y
 
 @ECHO COPYING FILES ON SERVER.
 scp -r %WORK_FOLDER%\bin\debug %SERVER_ADMINUSER%@%SERVER_IP%:%SERVER_FOLDER%\debug
-
-@REM : PRE INSTALLATION testing api on SERVER
-curl http://%SERVER_IP%/PilaniDevOpBackendCode/user
 
 @ECHO DOING SERVER INSTALLATION NOW USING PASSWORDLESS SSH. THIS WOULD FAIL IF USER/JENKINS/SCRIPT DONT HAVE ADMIN ACCESS.
 ssh %SERVER_ADMINUSER%@%SERVER_IP% " %SERVER_FOLDER%\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
