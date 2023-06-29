@@ -27,12 +27,20 @@ ssh %SERVER_ADMINUSER%@%SERVER_IP% "echo Hi From Server"
 
 dotnet publish -p:PublishProfile=IISProfile
 
-@ECHO DOING LOCAL INSTALLATION NOW
-powershell -command " $Env:WORK_FOLDER\bin\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
+@ECHO DOING LOCAL INSTALLATION NOW. THIS WOULD FAIL IF USER/JENKINS/SCRIPT DONT HAVE ADMIN ACCESS.
+powershell -command " $F=$Env:WORK_FOLDER; &$F\bin\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
 
-scp %WORK_FOLDER%\bin\debug %SERVER_ADMINUSER%@%SERVER_IP%:%SERVER_FOLDER%\debug
+@REM : testing api on localhost
+curl http://localhost/PilaniDevOpBackendCode/user
 
+@ECHO COPYING FILES ON SERVER.
+scp -r %WORK_FOLDER%\bin\debug %SERVER_ADMINUSER%@%SERVER_IP%:%SERVER_FOLDER%\debug
+
+@ECHO DOING SERVER INSTALLATION NOW USING PASSWORDLESS SSH. THIS WOULD FAIL IF USER/JENKINS/SCRIPT DONT HAVE ADMIN ACCESS.
 ssh %SERVER_ADMINUSER%@%SERVER_IP% " %SERVER_FOLDER%\debug\PilaniDevOpBackendCode.deploy.cmd /Y "
+
+@REM : testing api on SERVER
+curl http://%SERVER_IP%/PilaniDevOpBackendCode/user
 
 @ECHO DONE BUILD AND DEPLOYMENT
 exit /b 0
